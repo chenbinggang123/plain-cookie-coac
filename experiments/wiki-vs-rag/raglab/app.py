@@ -7,16 +7,16 @@ from typing import Any
 
 from .agentic import AgenticOrchestrator, resolve_agentic_settings
 from .agentic.normalizer import normalize_question
-from .index_store import IndexStore
-from .personalization import DIMENSIONS, LevelProfileStore
+from .personalization import DIMENSIONS
 from .providers import ProviderConfig, ProviderError
+from .storage_factory import create_index_store, create_profile_store, storage_backend
 from .vault import corpus_fingerprint, load_vault
 
 
 SAMPLE_QUESTIONS = [
-    "镜在六分钟经济落后、中路线权不足时应该入侵还是继续刷野？",
-    "镜的大招换位总是断，应该怎么练？",
-    "敌方三人在另一侧露头后，镜应该怎样转换地图资源？",
+    "李白逆风时应该怎么找翻盘点？",
+    "貂蝉四级第一波没抓到人，下一步做什么？",
+    "我玩射手经济第一，团战为什么总是暴毙？",
 ]
 
 
@@ -25,8 +25,9 @@ class CoachAgentApp:
         self.vault_root = vault_root.resolve()
         self.app_dir = app_dir.resolve()
         self.data_dir = self.app_dir / ".rag-data"
-        self.store = IndexStore(self.data_dir)
-        self.profiles = LevelProfileStore(self.data_dir)
+        self.store = create_index_store(self.data_dir)
+        self.profiles = create_profile_store(self.data_dir)
+        self.storage_backend = storage_backend()
         self.scope = self._load_scope()
 
     def _load_scope(self) -> dict[str, Any]:
@@ -46,6 +47,7 @@ class CoachAgentApp:
             "sample_questions": SAMPLE_QUESTIONS,
             "level_dimensions": DIMENSIONS,
             "agent": "水平感知规划式 Agent（Wiki 开启）",
+            "storage_backend": self.storage_backend,
         }
         if self.store.exists():
             manifest, _ = self.store.load()
@@ -66,13 +68,13 @@ class CoachAgentApp:
         result.update({"file_count": len(files), "elapsed_ms": round((time.perf_counter() - started) * 1000)})
         return result
 
-    def profile(self, user_id: Any, hero: str = "镜") -> dict[str, Any]:
+    def profile(self, user_id: Any, hero: str = "全英雄") -> dict[str, Any]:
         return self.profiles.get_profile(user_id, hero)
 
     def set_profile_level(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self.profiles.set_level(
             payload.get("user_id"),
-            str(payload.get("hero") or "镜"),
+            str(payload.get("hero") or "全英雄"),
             str(payload.get("dimension") or ""),
             payload.get("level"),
         )
@@ -89,7 +91,7 @@ class CoachAgentApp:
         embedding = ProviderConfig.from_payload(payload, "embedding")
         generation = ProviderConfig.from_payload(payload, "generation")
         normalized = normalize_question(question)
-        hero = str(normalized.get("hero") or payload.get("hero") or "镜")
+        hero = str(normalized.get("hero") or payload.get("hero") or "全英雄")
         level_context = self.profiles.context(
             payload.get("user_id"), hero, question, payload.get("declared_level")
         )

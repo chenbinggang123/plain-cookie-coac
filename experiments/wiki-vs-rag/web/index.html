@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>镜 · 水平感知 AI 教练</title>
+  <title>原味饼干 · 水平感知 AI 教练</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <header class="masthead">
     <div>
-      <p class="product-name">镜 · 个人训练教练</p>
+      <p class="product-name">原味饼干 · 全英雄训练教练</p>
       <h1>先判断你会到哪一步，<br>再讲刚好够用的下一步。</h1>
     </div>
     <div class="vault-status">
@@ -26,7 +26,7 @@
           <p>系统按能力分别判断，不用一个段位概括全部水平。</p>
         </header>
         <label>用户标识<input id="userId" value="local-user" maxlength="64"></label>
-        <label>当前英雄<input id="hero" value="镜" maxlength="16"></label>
+        <label>当前英雄<input id="hero" value="全英雄" maxlength="16"></label>
         <div id="profileDimensions" class="profile-dimensions"></div>
         <p class="profile-note">手动选择会立即校准；回答后的难度反馈连续两次一致才调整一级。</p>
       </aside>
@@ -83,20 +83,15 @@
     <details class="settings-panel">
       <summary>模型、索引与预算设置</summary>
       <div class="settings-grid">
-        <fieldset>
-          <legend>本地向量索引</legend>
-          <label>接口<select id="embeddingKind"><option value="ollama">Ollama</option><option value="openai">OpenAI 兼容</option></select></label>
-          <label>地址<input id="embeddingBase" value="http://127.0.0.1:11434"></label>
-          <label>模型<input id="embeddingModel" value="bge-m3"></label>
-          <label>密钥<input id="embeddingKey" type="password" autocomplete="off" placeholder="本地可留空"></label>
+        <fieldset class="provider-managed">
+          <legend>模型连接</legend>
+          <div class="managed-badge">服务端托管</div>
+          <p>Embedding 与回答模型统一从 <code>experiments/wiki-vs-rag/.env</code> 读取，密钥不会进入网页。</p>
+          <p class="managed-help">修改配置后请重启本地服务，再重建知识索引。</p>
           <button class="secondary" id="indexButton">重建知识索引</button>
         </fieldset>
         <fieldset>
-          <legend>回答模型</legend>
-          <label>接口<select id="generationKind"><option value="openai">OpenAI 兼容</option><option value="ollama">Ollama</option></select></label>
-          <label>地址<input id="generationBase" value="https://api.deepseek.com"></label>
-          <label>模型<input id="generationModel" value="deepseek-chat"></label>
-          <label>密钥<input id="generationKey" type="password" autocomplete="off"></label>
+          <legend>回答长度</legend>
           <label>回答字数<input id="answerChars" type="number" min="200" max="3000" value="800"></label>
         </fieldset>
         <fieldset>

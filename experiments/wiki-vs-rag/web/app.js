@@ -37,21 +37,7 @@ function showNotice(message, kind = "") {
 }
 
 function validateRunConfiguration() {
-  const embedding = providerConfig("embedding");
-  const generation = providerConfig("generation");
-  if (!embedding.base_url || !embedding.model) {
-    throw new Error("请先在下方设置中填写 Embedding 服务地址和模型名。");
-  }
-  if (!generation.base_url || !generation.model) {
-    throw new Error("请先在下方设置中填写回答模型地址和模型名。");
-  }
-  if (generation.kind === "openai" && /api\.deepseek\.com/i.test(generation.base_url) && !generation.api_key) {
-    const settings = $(".settings-panel");
-    settings.open = true;
-    $("#generationKey").focus();
-    throw new Error("还缺 DeepSeek API Key。请在已展开的“模型、索引与预算设置”中填写密钥，再点击分析；密钥不会写入本地文件。");
-  }
-  return { embedding, generation };
+  return { embedding: {}, generation: {} };
 }
 
 function actionableRunError(error) {
@@ -71,8 +57,7 @@ function actionableRunError(error) {
   }
   if (/HTTP 401|unauthorized|authentication/i.test(message)) {
     $(".settings-panel").open = true;
-    $("#generationKey").focus();
-    return "回答模型鉴权失败。请检查 DeepSeek API Key 后重试。";
+    return "模型鉴权失败。请检查 .env 中的 API Key，保存后重启服务。";
   }
   return message;
 }
@@ -118,7 +103,7 @@ function levelText(level) {
 
 async function refreshProfile() {
   const user = encodeURIComponent($("#userId").value.trim() || "local-user");
-  const hero = encodeURIComponent($("#hero").value.trim() || "镜");
+  const hero = encodeURIComponent($("#hero").value.trim() || "全英雄");
   try {
     const profile = await api(`/api/profile?user_id=${user}&hero=${hero}`);
     renderProfile(profile);
@@ -246,7 +231,7 @@ $("#runButton").addEventListener("click", async () => {
       body: JSON.stringify({
         question,
         user_id: $("#userId").value.trim() || "local-user",
-        hero: $("#hero").value.trim() || "镜",
+        hero: $("#hero").value.trim() || "全英雄",
         declared_level: declared === "auto" ? null : Number(declared),
         settings: agentSettings(),
         embedding: providers.embedding,
@@ -289,7 +274,7 @@ $("#indexButton").addEventListener("click", async () => {
   const button = $("#indexButton");
   setBusy(button, true, "正在建立索引…");
   try {
-    const data = await api("/api/index", { method: "POST", body: JSON.stringify({ embedding: providerConfig("embedding") }) });
+    const data = await api("/api/index", { method: "POST", body: "{}" });
     showNotice(`索引完成：${data.file_count} 个文件，${data.chunk_count} 个片段，用时 ${data.elapsed_ms} ms。`, "success");
     await refreshStatus();
   } catch (error) {

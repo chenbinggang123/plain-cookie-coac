@@ -124,9 +124,9 @@ class LevelProfileStore:
         hero_profile = user["heroes"].setdefault(hero, {"dimensions": {}})
         return hero_profile["dimensions"].setdefault(dimension, _new_state())
 
-    def get_profile(self, user_id: Any, hero: str = "镜") -> dict[str, Any]:
+    def get_profile(self, user_id: Any, hero: str = "全英雄") -> dict[str, Any]:
         clean_id = _clean_user_id(user_id)
-        clean_hero = str(hero or "镜").strip() or "镜"
+        clean_hero = str(hero or "全英雄").strip() or "全英雄"
         with self._lock:
             payload = self._read()
             states = {
@@ -151,7 +151,7 @@ class LevelProfileStore:
         declared_level: Any = None,
     ) -> dict[str, Any]:
         clean_id = _clean_user_id(user_id)
-        clean_hero = str(hero or "镜").strip() or "镜"
+        clean_hero = str(hero or "全英雄").strip() or "全英雄"
         dimension = infer_dimension(question)
         power_signal = infer_power_signal(question)
         with self._lock:
@@ -206,7 +206,7 @@ class LevelProfileStore:
         if dimension not in DIMENSIONS:
             raise ValueError("能力维度必须是 mechanics、economy 或 decision。")
         clean_id = _clean_user_id(user_id)
-        clean_hero = str(hero or "镜").strip() or "镜"
+        clean_hero = str(hero or "全英雄").strip() or "全英雄"
         clean_level = min(3, max(1, int(level)))
         with self._lock:
             payload = self._read()
@@ -232,7 +232,7 @@ class LevelProfileStore:
         if dimension not in DIMENSIONS:
             raise ValueError("反馈缺少有效的能力维度。")
         user_id = _clean_user_id(payload.get("user_id"))
-        hero = str(payload.get("hero") or "镜").strip() or "镜"
+        hero = str(payload.get("hero") or "全英雄").strip() or "全英雄"
         with self._lock:
             data = self._read()
             state = self._ensure_dimension(data, user_id, hero, dimension)

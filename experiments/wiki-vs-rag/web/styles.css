@@ -97,6 +97,11 @@ fieldset { margin: 0; padding: 22px; background: #f8faf9; border: 0; }
 legend { font-weight: 750; }
 fieldset label { display: grid; grid-template-columns: 90px 1fr; align-items: center; gap: 10px; margin: 9px 0; color: var(--muted); font-size: 12px; }
 fieldset button { margin: 8px 0 0 100px; }
+.provider-managed p { margin: 10px 0; max-width: 58ch; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.provider-managed code { color: var(--ink); overflow-wrap: anywhere; }
+.provider-managed .managed-help { color: var(--ink); }
+.managed-badge { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border: 1px solid #a9c7b8; border-radius: 999px; background: #eaf5ef; color: #245c43; font-size: 12px; font-weight: 750; }
+.provider-managed button { margin-left: 0; }
 
 @media (max-width: 880px) {
   .masthead { align-items: flex-start; flex-direction: column; }

@@ -29,6 +29,15 @@
 
 ## 启动
 
+首次启动前，打开同目录的 `.env`，只填写：
+
+```text
+EMBEDDING_API_KEY=你的百炼API Key
+GENERATION_API_KEY=你的DeepSeek API Key
+```
+
+模型地址和名称已经预填。`.env` 被 Git 忽略，不会上传到 GitHub；`.env.example` 是可安全提交的模板。保存配置后运行：
+
 ```powershell
 cd experiments/wiki-vs-rag
 .\start.ps1
@@ -38,7 +47,7 @@ cd experiments/wiki-vs-rag
 
 打开 `http://127.0.0.1:8765/`。
 
-首次使用或知识库变化后，在页面底部填写 Ollama Embedding 配置并点击“重建知识索引”。索引没有变化时会直接复用 `.rag-data/manifest.json` 与 `.rag-data/vectors.npy`。
+首次使用或知识库变化后，在页面底部点击“重建知识索引”。索引没有变化时会直接复用 `.rag-data/manifest.json` 与 `.rag-data/vectors.npy`。
 
 ## API
 
@@ -56,3 +65,16 @@ python -m unittest discover -s tests -v
 ```
 
 当前版本刻意不包含阅读品味、自动策略发布和模型微调。第一阶段只验证一件事：相同证据下，回答难度能否稳定匹配用户在相关能力上的水平。
+
+## CloudBase 持久化
+
+本地默认使用 `.rag-data`。正式部署可切换到普通 CloudBase PostgreSQL；向量保存在数组列中，由 Python 在内存中检索，不要求安装 `pgvector`：
+
+```env
+STORAGE_BACKEND=cloudbase_pg
+CLOUDBASE_DATABASE_URL=你的服务端PostgreSQL连接串
+EMBEDDING_DIMENSIONS=1024
+REQUIRE_CLOUDBASE_IDENTITY=true
+```
+
+首次部署前在 CloudBase PG SQL 编辑器执行 `migrations/001_cloudbase_pg.sql`。云端索引按内容哈希增量更新，未变化片段直接复用旧向量；新版本构建失败时旧版本继续提供检索。

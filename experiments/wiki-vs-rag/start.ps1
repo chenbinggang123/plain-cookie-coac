@@ -1,4 +1,12 @@
-$bypass = @($env:NO_PROXY, "api.deepseek.com", "localhost", "127.0.0.1", "::1") |
+$bypass = @(
+    $env:NO_PROXY,
+    "api.deepseek.com",
+    "dashscope.aliyuncs.com",
+    ".maas.aliyuncs.com",
+    "localhost",
+    "127.0.0.1",
+    "::1"
+) |
     Where-Object { $_ } |
     Select-Object -Unique
 $env:NO_PROXY = $bypass -join ","

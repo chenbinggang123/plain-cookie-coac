@@ -17,6 +17,29 @@ from raglab.app import CoachAgentApp, ProviderError
 APP_DIR = Path(__file__).resolve().parent
 DEFAULT_VAULT = APP_DIR.parents[1]
 WEB_DIR = APP_DIR / "web"
+ENV_FILE = APP_DIR / ".env"
+
+
+def load_env_file(path: Path = ENV_FILE) -> None:
+    """Load simple KEY=VALUE pairs without overriding deployed environment variables."""
+    if not path.is_file():
+        return
+    for line_number, raw_line in enumerate(path.read_text(encoding="utf-8-sig").splitlines(), 1):
+        line = raw_line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if line.startswith("export "):
+            line = line[7:].lstrip()
+        if "=" not in line:
+            raise ValueError(f"{path.name} 第 {line_number} 行缺少等号。")
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key or not key.replace("_", "").isalnum() or key[0].isdigit():
+            raise ValueError(f"{path.name} 第 {line_number} 行变量名无效。")
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            value = value[1:-1]
+        os.environ.setdefault(key, value)
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -48,6 +71,17 @@ class Handler(BaseHTTPRequestHandler):
         supplied = self.headers.get("X-Index-Admin-Token", "")
         return hmac.compare_digest(supplied, expected)
 
+    def _user_id(self, fallback: object = None) -> str:
+        cloud_user = (
+            self.headers.get("X-WX-FROM-OPENID", "").strip()
+            or self.headers.get("X-WX-OPENID", "").strip()
+        )
+        if cloud_user:
+            return cloud_user
+        if os.environ.get("REQUIRE_CLOUDBASE_IDENTITY", "").strip().lower() in {"1", "true", "yes"}:
+            raise PermissionError("缺少经过 CloudBase 验证的微信用户身份。")
+        return str(fallback or "local-user").strip() or "local-user"
+
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         if parsed.path == "/health":
@@ -62,9 +96,11 @@ class Handler(BaseHTTPRequestHandler):
         if parsed.path == "/api/profile":
             try:
                 query = parse_qs(parsed.query)
-                user_id = (query.get("user_id") or ["local-user"])[0]
+                user_id = self._user_id((query.get("user_id") or ["local-user"])[0])
                 hero = (query.get("hero") or ["全英雄"])[0]
                 self._json({"ok": True, "data": self.app.profile(user_id, hero)})
+            except PermissionError as exc:
+                self._json({"ok": False, "error": str(exc)}, HTTPStatus.UNAUTHORIZED)
             except Exception as exc:
                 self._json({"ok": False, "error": str(exc)}, HTTPStatus.BAD_REQUEST)
             return
@@ -90,6 +126,9 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         try:
             payload = self._read_json()
+            if self.path in {"/api/coach/run", "/api/profile", "/api/feedback"}:
+                payload = dict(payload)
+                payload["user_id"] = self._user_id(payload.get("user_id"))
             if self.path == "/api/index":
                 if not self._index_authorized():
                     self._json({"ok": False, "error": "索引管理凭据无效。"}, HTTPStatus.FORBIDDEN)
@@ -108,12 +147,15 @@ class Handler(BaseHTTPRequestHandler):
         except (ValueError, FileNotFoundError, ProviderError, json.JSONDecodeError) as exc:
             print(f"[coach request rejected] {exc}", file=sys.stderr, flush=True)
             self._json({"ok": False, "error": str(exc)}, HTTPStatus.BAD_REQUEST)
+        except PermissionError as exc:
+            self._json({"ok": False, "error": str(exc)}, HTTPStatus.UNAUTHORIZED)
         except Exception as exc:
             print(f"[coach server error] {type(exc).__name__}: {exc}", file=sys.stderr, flush=True)
             self._json({"ok": False, "error": f"服务器错误：{exc}"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 def main() -> None:
+    load_env_file()
     parser = argparse.ArgumentParser(description="水平感知规划式 AI 教练")
     parser.add_argument("--vault", type=Path, default=DEFAULT_VAULT)
     parser.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))
