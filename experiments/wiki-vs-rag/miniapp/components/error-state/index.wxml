@@ -1,0 +1,4 @@
+<view class="error" aria-live="assertive">
+  <view class="copy"><text class="title">{{title}}</text><text class="detail">{{detail}}</text></view>
+  <button bindtap="retry">{{actionLabel}}</button>
+</view>

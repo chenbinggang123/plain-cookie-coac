@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "evidence-panel": "../evidence-panel/index",
+    "difficulty-feedback": "../difficulty-feedback/index"
+  }
+}

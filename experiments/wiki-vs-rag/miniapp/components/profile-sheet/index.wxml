@@ -1,0 +1,25 @@
+<view wx:if="{{open}}" class="layer" aria-label="当前英雄与能力画像">
+  <view class="scrim" bindtap="close"></view>
+  <scroll-view class="sheet" scroll-y="true" enhanced="true" show-scrollbar="false">
+    <view class="handle" aria-hidden="true"></view>
+    <view class="head"><view><text class="eyebrow">原味饼干</text><text class="title">英雄与能力画像</text></view><button bindtap="close" aria-label="关闭能力画像">×</button></view>
+    <view class="identity"><text>用户标识</text><text>{{profile.user_id || 'local-user'}}</text></view>
+    <view class="hero-field">
+      <label for="heroInput">当前英雄</label>
+      <input id="heroInput" value="{{heroDraft}}" maxlength="12" placeholder="输入英雄名或全英雄" confirm-type="done" bindinput="inputHero" bindconfirm="commitHero" bindblur="commitHero" aria-label="当前英雄" />
+      <text>选择具体英雄后，能力画像和回答深度会按该英雄分别记录。</text>
+    </view>
+    <view wx:if="{{loading}}" class="state" aria-live="polite">正在读取你的能力画像…</view>
+    <view wx:elif="{{error}}" class="state state--error" aria-live="assertive"><text>{{error}}</text><button bindtap="retry">重试</button></view>
+    <view wx:else class="dimensions">
+      <view wx:for="{{dimensions}}" wx:key="key" class="dimension">
+        <view class="dimension-head"><view><text class="dimension-title">{{item.label}}</text><text class="description">{{item.description}}</text></view><text class="confidence">置信度 {{item.confidenceText}}</text></view>
+        <text class="current">{{item.levelLabel}}</text>
+        <view class="levels" aria-label="调整{{item.label}}等级">
+          <button wx:for="{{item.levelOptions}}" wx:for-item="level" wx:key="value" class="{{level.active ? 'active' : ''}}" data-dimension="{{item.key}}" data-level="{{level.value}}" bindtap="setLevel" disabled="{{updatingDimension === item.key}}">L{{level.value}}</button>
+        </view>
+      </view>
+    </view>
+    <view class="note"><text class="note-title">手动设置会立即更新教学深度</text><text>这不会改变教练使用的知识事实；你也可以继续通过回答后的难度反馈让系统逐步校准。</text></view>
+  </scroll-view>
+</view>

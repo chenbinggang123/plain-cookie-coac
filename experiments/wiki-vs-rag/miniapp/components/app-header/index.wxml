@@ -1,0 +1,17 @@
+<view class="header" style="padding-top: {{topInset}}px;" aria-label="对话导航">
+  <view class="bar">
+    <button class="icon-button" bindtap="openHistory" aria-label="打开历史会话">
+      <view class="menu-icon" aria-hidden="true"><text></text><text></text><text></text></view>
+    </button>
+    <button class="identity" bindtap="openProfile" aria-label="打开当前英雄与能力画像">
+      <view class="cookie-mark" aria-hidden="true"><text></text><text></text><text></text></view>
+      <view class="identity-copy">
+        <text class="title">原味饼干</text>
+        <view class="status-row"><text class="dot dot--{{statusTone}}"></text><text>{{statusLabel}}</text></view>
+      </view>
+    </button>
+    <button class="icon-button add-button" bindtap="createConversation" aria-label="新建对话">
+      <text aria-hidden="true">＋</text>
+    </button>
+  </view>
+</view>

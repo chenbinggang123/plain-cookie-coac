@@ -1,0 +1,36 @@
+<view class="evidence">
+  <view wx:if="{{insufficient}}" class="insufficient" aria-live="polite">
+    <text class="insufficient-title">证据还不够完整</text>
+    <text>教练已明确标出缺口，不会把不确定内容说成结论。</text>
+  </view>
+  <button class="disclosure" bindtap="toggleRationale" aria-expanded="{{rationaleOpen}}">
+    <text>为什么这样建议</text><text class="chevron {{rationaleOpen ? 'chevron--open' : ''}}" aria-hidden="true">⌄</text>
+  </button>
+  <view wx:if="{{rationaleOpen}}" class="rationale">
+    <view class="fact"><text>问题类型</text><text>{{rationale.route}}</text></view>
+    <view class="fact"><text>教学目标</text><text>{{rationale.learningGoal}}</text></view>
+    <view class="metrics">
+      <view><strong>{{rationale.rounds}}</strong><text>检索轮次</text></view>
+      <view><strong>{{rationale.evidenceCount}}</strong><text>最终证据</text></view>
+      <view><strong>{{rationale.wikiAdded}}</strong><text>Wiki 补充</text></view>
+    </view>
+    <view class="missing"><text class="missing-label">仍缺少</text><text>{{rationale.missingText}}</text></view>
+    <button class="sources-button" bindtap="toggleSources" aria-expanded="{{sourcesOpen}}">
+      <text>查看知识来源</text><text aria-hidden="true">{{sourcesOpen ? '收起' : evidence.length + ' 条'}}</text>
+    </button>
+    <view wx:if="{{sourcesOpen}}" class="sources">
+      <view wx:if="{{!evidence.length}}" class="empty-source">本次没有检索到足够可靠的来源。补充局面信息后再问一次，会更容易形成判断。</view>
+      <view wx:for="{{evidence}}" wx:key="rank" class="source">
+        <button class="source-head" data-index="{{index}}" bindtap="toggleItem" aria-expanded="{{openedIndex === index}}">
+          <text class="rank">{{item.rank}}</text>
+          <view class="source-title"><text>{{item.title}}</text><text class="path">{{item.path}}</text></view>
+          <text class="score">{{item.scoreText}}</text>
+        </button>
+        <view wx:if="{{openedIndex === index}}" class="source-body">
+          <text class="reason">{{item.reason}}</text>
+          <text user-select="true">{{item.content}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

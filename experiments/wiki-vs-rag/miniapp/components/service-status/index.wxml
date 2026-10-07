@@ -1,0 +1,4 @@
+<view wx:if="{{visible}}" class="banner banner--{{tone}}" aria-live="polite">
+  <view class="copy"><text class="title">{{title}}</text><text class="detail">{{detail}}</text></view>
+  <button bindtap="handleAction">{{actionLabel}}</button>
+</view>

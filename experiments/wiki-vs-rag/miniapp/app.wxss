@@ -1,0 +1,59 @@
+page {
+  --color-ink: #14232b;
+  --color-muted: #617078;
+  --color-brand: #147d78;
+  --color-brand-strong: #0c635f;
+  --color-brand-soft: #e4f0ed;
+  --color-paper: #f7f7f5;
+  --color-surface: #ffffff;
+  --color-subtle: #eff3f1;
+  --color-line: #d8dfdc;
+  --color-warning: #8c6517;
+  --color-warning-soft: #fbf1d9;
+  --color-error: #a94a3f;
+  --color-error-soft: #f8e9e6;
+  --space-1: 8rpx;
+  --space-2: 16rpx;
+  --space-3: 24rpx;
+  --space-4: 32rpx;
+  --space-5: 48rpx;
+  --radius-sm: 12rpx;
+  --radius-md: 22rpx;
+  --radius-lg: 32rpx;
+  --safe-bottom: env(safe-area-inset-bottom);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 32rpx;
+}
+
+button,
+textarea,
+input {
+  font: inherit;
+}
+
+button::after {
+  border: 0;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  page,
+  view,
+  button {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

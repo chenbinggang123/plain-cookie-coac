@@ -1,0 +1,6 @@
+.page { height: 100vh; background: var(--color-paper); overflow: hidden; }
+.conversation { position: fixed; inset-inline: 0; box-sizing: border-box; background: var(--color-paper); }
+.chat-bottom { height: 32rpx; }
+@media (min-width: 700px) {
+  .conversation { left: 50%; right: auto; width: 700px; transform: translateX(-50%); border-inline: 1rpx solid var(--color-line); }
+}

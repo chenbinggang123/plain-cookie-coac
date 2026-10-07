@@ -1,0 +1,13 @@
+<view wx:if="{{open}}" class="layer" aria-label="选择讲解难度">
+  <view class="scrim" bindtap="close"></view>
+  <view class="sheet" catchtouchmove="stop">
+    <view class="handle" aria-hidden="true"></view>
+    <view class="head"><view><text class="title">本次讲解深度</text><text class="hint">只影响这一次回答，可随时改回自动匹配。</text></view><button bindtap="close" aria-label="关闭">×</button></view>
+    <view class="options">
+      <button wx:for="{{options}}" wx:key="value" class="option {{selected === item.value ? 'option--selected' : ''}}" data-value="{{item.value}}" bindtap="choose" aria-label="{{item.title}}，{{item.detail}}">
+        <view class="radio"><view wx:if="{{selected === item.value}}"></view></view>
+        <view class="option-copy"><text>{{item.title}}</text><text>{{item.detail}}</text></view>
+      </button>
+    </view>
+  </view>
+</view>

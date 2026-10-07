@@ -1,0 +1,11 @@
+<view class="empty">
+  <view class="symbol" aria-hidden="true"><text></text><text></text><text></text></view>
+  <text class="eyebrow">原味饼干 · 对局复盘</text>
+  <text class="title">今天想复盘哪一局？</text>
+  <text class="hint">把英雄、时间、经济、线权、敌方位置和你犹豫的动作告诉我。</text>
+  <view class="suggestions" aria-label="问题建议">
+    <button wx:for="{{suggestions}}" wx:key="*this" class="suggestion" data-question="{{item}}" bindtap="choose">
+      <text>{{item}}</text><text class="arrow" aria-hidden="true">→</text>
+    </button>
+  </view>
+</view>

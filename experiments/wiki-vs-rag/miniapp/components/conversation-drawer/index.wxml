@@ -1,0 +1,15 @@
+<view wx:if="{{open}}" class="layer" aria-label="历史会话">
+  <view class="scrim" bindtap="close"></view>
+  <view class="drawer" style="padding-top: {{topInset}}px;" catchtouchmove="stop">
+    <view class="head"><text>复盘记录</text><button bindtap="close" aria-label="关闭历史会话">×</button></view>
+    <button class="new" bindtap="create"><text aria-hidden="true">＋</text><text>新建对话</text></button>
+    <scroll-view class="history" scroll-y="true" enhanced="true" show-scrollbar="false">
+      <view wx:if="{{!conversations.length}}" class="empty"><text class="empty-title">还没有复盘记录</text><text>问出第一个问题后，这里会自动保存到本机。</text></view>
+      <view wx:for="{{conversations}}" wx:key="id" class="item {{activeId === item.id ? 'item--active' : ''}}">
+        <button class="select" data-id="{{item.id}}" bindtap="select"><text class="item-title">{{item.title}}</text><text class="time">{{item.timeLabel}}</text></button>
+        <button class="delete" data-id="{{item.id}}" bindtap="remove" aria-label="删除会话{{item.title}}">删除</button>
+      </view>
+    </scroll-view>
+    <view class="privacy">会话只保存在当前微信设备上</view>
+  </view>
+</view>

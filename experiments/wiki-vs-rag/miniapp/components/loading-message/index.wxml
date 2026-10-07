@@ -1,0 +1,4 @@
+<view class="loading" aria-live="polite" aria-label="教练正在生成回答">
+  <view class="mark" aria-hidden="true"><text></text><text></text><text></text></view>
+  <view class="copy"><text class="label">原味饼干</text><text class="stage">{{stage}}</text></view>
+</view>

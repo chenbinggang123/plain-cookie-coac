@@ -1,0 +1,9 @@
+{
+  "desc": "原味饼干 · AI 教练小程序页面索引",
+  "rules": [
+    {
+      "action": "allow",
+      "page": "pages/chat/index"
+    }
+  ]
+}

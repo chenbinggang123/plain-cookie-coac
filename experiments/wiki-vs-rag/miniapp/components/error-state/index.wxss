@@ -1,0 +1,5 @@
+.error { margin: 22rpx 24rpx; padding: 24rpx; display: flex; align-items: center; gap: 20rpx; background: var(--color-error-soft); border-left: 5rpx solid var(--color-error); border-radius: 8rpx 18rpx 18rpx 8rpx; }
+.copy { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 7rpx; }
+.title { font-size: 28rpx; font-weight: 650; }
+.detail { color: #754c47; font-size: 24rpx; line-height: 1.55; }
+button { min-width: 64px; min-height: 44px; padding: 0 18rpx; color: var(--color-error); background: #fff; border: 1rpx solid rgba(169,74,63,.3); border-radius: 14rpx; font-size: 25rpx; font-weight: 600; }

@@ -1,0 +1,17 @@
+.layer { position: fixed; z-index: 70; inset: 0; }
+.scrim { position: absolute; inset: 0; background: rgba(20,35,43,.38); }
+.sheet { position: absolute; inset: auto 0 0; padding: 14rpx 24rpx calc(24rpx + env(safe-area-inset-bottom)); background: var(--color-paper); border-radius: 34rpx 34rpx 0 0; }
+.handle { width: 68rpx; height: 8rpx; margin: 0 auto 18rpx; background: #c0c9c6; border-radius: 8rpx; }
+.head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20rpx; }
+.head > view { display: flex; flex-direction: column; gap: 6rpx; }
+.title { font-family: "Songti SC", STSong, serif; font-size: 36rpx; font-weight: 650; }
+.hint { color: var(--color-muted); font-size: 23rpx; line-height: 1.5; }
+.head button { width: 44px; height: 44px; margin: -8rpx -8rpx 0 0; padding: 0; color: var(--color-muted); background: transparent; font-size: 48rpx; font-weight: 300; }
+.options { margin-top: 26rpx; border-top: 1rpx solid var(--color-line); }
+.option { width: 100%; min-height: 56px; margin: 0; padding: 18rpx 6rpx; display: grid; grid-template-columns: 40rpx 1fr; align-items: center; gap: 20rpx; color: var(--color-ink); background: transparent; border-bottom: 1rpx solid var(--color-line); border-radius: 0; text-align: left; }
+.option--selected { background: var(--color-brand-soft); }
+.radio { width: 32rpx; height: 32rpx; display: flex; align-items: center; justify-content: center; border: 2rpx solid #8da19d; border-radius: 50%; }
+.radio view { width: 18rpx; height: 18rpx; background: var(--color-brand); border-radius: 50%; }
+.option-copy { display: flex; flex-direction: column; gap: 4rpx; }
+.option-copy text:first-child { font-size: 27rpx; font-weight: 600; }
+.option-copy text:last-child { color: var(--color-muted); font-size: 22rpx; line-height: 1.5; }

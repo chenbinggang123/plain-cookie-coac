@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>镜 · 水平感知 AI 教练</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="masthead">
+    <div>
+      <p class="product-name">镜 · 个人训练教练</p>
+      <h1>先判断你会到哪一步，<br>再讲刚好够用的下一步。</h1>
+    </div>
+    <div class="vault-status">
+      <span class="status-dot" id="statusDot"></span>
+      <div><strong id="statusTitle">读取知识库</strong><p id="statusDetail">正在检查索引</p></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="workspace">
+      <aside class="profile-panel">
+        <header>
+          <h2>你的当前水平</h2>
+          <p>系统按能力分别判断，不用一个段位概括全部水平。</p>
+        </header>
+        <label>用户标识<input id="userId" value="local-user" maxlength="64"></label>
+        <label>当前英雄<input id="hero" value="镜" maxlength="16"></label>
+        <div id="profileDimensions" class="profile-dimensions"></div>
+        <p class="profile-note">手动选择会立即校准；回答后的难度反馈连续两次一致才调整一级。</p>
+      </aside>
+
+      <section class="coach-panel">
+        <div class="question-block">
+          <label for="question">这局你卡在哪里？</label>
+          <textarea id="question" rows="5" placeholder="把时间、经济、线权、敌方位置和你犹豫的动作说清楚。"></textarea>
+          <div class="question-chips" id="questionChips"></div>
+          <div class="question-actions">
+            <label class="level-choice">本次难度
+              <select id="declaredLevel">
+                <option value="auto">沿用当前画像</option>
+                <option value="1">L1 直接告诉我怎么做</option>
+                <option value="2">L2 教我判断条件</option>
+                <option value="3">L3 分析权衡与机会成本</option>
+              </select>
+            </label>
+            <button class="primary" id="runButton">让教练分析</button>
+          </div>
+          <p class="notice" id="notice" role="status" aria-live="polite" hidden></p>
+        </div>
+
+        <article class="answer-card" id="answerCard" hidden>
+          <header>
+            <div><span id="levelBadge" class="level-badge"></span><h2>教练回答</h2></div>
+            <p id="answerMeta"></p>
+          </header>
+          <div class="answer-copy" id="answerCopy"></div>
+          <section class="difficulty-feedback" id="feedbackPanel">
+            <div><strong>这次讲解难度合适吗？</strong><p>你的反馈只校准当前能力，不改变知识事实。</p></div>
+            <div class="feedback-actions">
+              <button data-feedback="too_easy">太简单</button>
+              <button data-feedback="right" class="recommended">正合适</button>
+              <button data-feedback="too_hard">太难</button>
+            </div>
+          </section>
+        </article>
+
+        <section class="evidence-panel" id="evidencePanel" hidden>
+          <details open>
+            <summary>教练为什么这样回答</summary>
+            <div class="trace-grid" id="traceGrid"></div>
+            <div class="trace-details" id="traceDetails"></div>
+          </details>
+          <details>
+            <summary>查看知识库证据</summary>
+            <div id="evidenceList" class="evidence-list"></div>
+          </details>
+        </section>
+      </section>
+    </div>
+
+    <details class="settings-panel">
+      <summary>模型、索引与预算设置</summary>
+      <div class="settings-grid">
+        <fieldset>
+          <legend>本地向量索引</legend>
+          <label>接口<select id="embeddingKind"><option value="ollama">Ollama</option><option value="openai">OpenAI 兼容</option></select></label>
+          <label>地址<input id="embeddingBase" value="http://127.0.0.1:11434"></label>
+          <label>模型<input id="embeddingModel" value="bge-m3"></label>
+          <label>密钥<input id="embeddingKey" type="password" autocomplete="off" placeholder="本地可留空"></label>
+          <button class="secondary" id="indexButton">重建知识索引</button>
+        </fieldset>
+        <fieldset>
+          <legend>回答模型</legend>
+          <label>接口<select id="generationKind"><option value="openai">OpenAI 兼容</option><option value="ollama">Ollama</option></select></label>
+          <label>地址<input id="generationBase" value="https://api.deepseek.com"></label>
+          <label>模型<input id="generationModel" value="deepseek-chat"></label>
+          <label>密钥<input id="generationKey" type="password" autocomplete="off"></label>
+          <label>回答字数<input id="answerChars" type="number" min="200" max="3000" value="800"></label>
+        </fieldset>
+        <fieldset>
+          <legend>检索预算</legend>
+          <label>最多轮数<input id="maxRounds" type="number" min="1" max="3" value="2"></label>
+          <label>每维候选<input id="semanticTopK" type="number" min="5" max="30" value="12"></label>
+          <label>Wiki 节点<input id="wikiNodes" type="number" min="2" max="24" value="12"></label>
+          <label>最终证据<input id="finalEvidence" type="number" min="4" max="16" value="10"></label>
+          <label>Token 预算<input id="tokenBudget" type="number" min="1200" max="16000" value="6000"></label>
+        </fieldset>
+        <fieldset>
+          <legend>成本估算（美元 / 百万 Token）</legend>
+          <label>缓存命中<input id="priceCacheHit" type="number" min="0" step="0.001" value="0.003"></label>
+          <label>缓存未命中<input id="priceCacheMiss" type="number" min="0" step="0.01" value="0.15"></label>
+          <label>输出<input id="priceOutput" type="number" min="0" step="0.01" value="0.60"></label>
+        </fieldset>
+      </div>
+    </details>
+  </main>
+
+  <template id="evidenceTemplate">
+    <details class="evidence-item"><summary><span class="evidence-rank"></span><span><strong></strong><small></small></span><em></em></summary><p class="evidence-reason"></p><p class="evidence-content"></p></details>
+  </template>
+  <script src="/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "usingComponents": {
+    "app-header": "/components/app-header/index",
+    "service-status": "/components/service-status/index",
+    "empty-conversation": "/components/empty-conversation/index",
+    "user-message": "/components/user-message/index",
+    "coach-message": "/components/coach-message/index",
+    "loading-message": "/components/loading-message/index",
+    "error-state": "/components/error-state/index",
+    "composer": "/components/composer/index",
+    "level-selector-sheet": "/components/level-selector-sheet/index",
+    "profile-sheet": "/components/profile-sheet/index",
+    "conversation-drawer": "/components/conversation-drawer/index"
+  }
+}

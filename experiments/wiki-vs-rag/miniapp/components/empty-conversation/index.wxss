@@ -1,0 +1,13 @@
+.empty { min-height: 760rpx; padding: 116rpx 40rpx 48rpx; display: flex; flex-direction: column; align-items: center; text-align: center; }
+.symbol { width: 86rpx; height: 86rpx; margin-bottom: 30rpx; border: 3rpx solid var(--color-brand); border-radius: 48%; background: var(--color-brand-soft); transform: rotate(-8deg); position: relative; }
+.symbol text { position: absolute; width: 11rpx; height: 11rpx; border-radius: 50%; background: var(--color-brand); }
+.symbol text:nth-child(1) { left: 20rpx; top: 21rpx; }
+.symbol text:nth-child(2) { right: 18rpx; top: 30rpx; }
+.symbol text:nth-child(3) { left: 35rpx; bottom: 16rpx; }
+.eyebrow { color: var(--color-brand); font-size: 22rpx; font-weight: 650; letter-spacing: .12em; }
+.title { margin-top: 14rpx; font-family: "Songti SC", STSong, serif; font-size: 48rpx; font-weight: 600; line-height: 1.28; }
+.hint { max-width: 590rpx; margin-top: 20rpx; color: var(--color-muted); font-size: 27rpx; line-height: 1.7; }
+.suggestions { width: 100%; margin-top: 56rpx; border-top: 1rpx solid var(--color-line); }
+.suggestion { width: 100%; min-height: 50px; margin: 0; padding: 22rpx 6rpx; display: flex; align-items: center; justify-content: space-between; gap: 20rpx; color: var(--color-ink); background: transparent; border-bottom: 1rpx solid var(--color-line); border-radius: 0; text-align: left; font-size: 28rpx; line-height: 1.55; }
+.suggestion:active { background: var(--color-subtle); }
+.arrow { flex: 0 0 auto; color: var(--color-brand); font-size: 34rpx; }

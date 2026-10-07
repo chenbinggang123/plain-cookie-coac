@@ -1,0 +1,10 @@
+.loading { margin: 30rpx 30rpx 20rpx; display: flex; align-items: center; gap: 20rpx; }
+.mark { width: 58rpx; height: 58rpx; display: flex; align-items: center; justify-content: center; gap: 6rpx; border: 1rpx solid var(--color-line); border-radius: 50%; background: var(--color-surface); }
+.mark text { width: 7rpx; height: 7rpx; border-radius: 50%; background: var(--color-brand); animation: breathe 1.15s ease-in-out infinite; }
+.mark text:nth-child(2) { animation-delay: .14s; }
+.mark text:nth-child(3) { animation-delay: .28s; }
+.copy { display: flex; flex-direction: column; gap: 3rpx; }
+.label { color: var(--color-muted); font-size: 22rpx; }
+.stage { font-size: 28rpx; }
+@keyframes breathe { 0%, 100% { opacity: .26; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-4rpx); } }
+@media (prefers-reduced-motion: reduce) { .mark text { animation: none; opacity: .72; } }

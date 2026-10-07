@@ -1,0 +1,19 @@
+.message { display: block; padding: 34rpx 30rpx 38rpx; }
+.meta { display: flex; align-items: center; justify-content: space-between; }
+.coach-id { display: flex; align-items: center; gap: 14rpx; color: var(--color-muted); font-size: 23rpx; font-weight: 600; }
+.avatar { width: 52rpx; height: 52rpx; border: 2rpx solid var(--color-brand); border-radius: 48%; background: var(--color-brand-soft); position: relative; transform: rotate(-8deg); }
+.avatar text { position: absolute; width: 6rpx; height: 6rpx; border-radius: 50%; background: var(--color-brand); }
+.avatar text:nth-child(1) { left: 12rpx; top: 13rpx; }
+.avatar text:nth-child(2) { right: 10rpx; top: 19rpx; }
+.avatar text:nth-child(3) { left: 22rpx; bottom: 10rpx; }
+.copy { min-width: 44px; min-height: 44px; margin: 0; padding: 0 12rpx; color: var(--color-muted); background: transparent; border-radius: 14rpx; font-size: 23rpx; }
+.copy:active { color: var(--color-brand-strong); background: var(--color-subtle); }
+.badge-row { margin: 20rpx 0 22rpx; display: flex; flex-wrap: wrap; align-items: center; gap: 12rpx; }
+.badge { padding: 8rpx 14rpx; color: var(--color-brand-strong); background: var(--color-brand-soft); border-radius: 999rpx; font-size: 22rpx; font-weight: 600; }
+.source { color: var(--color-muted); font-size: 21rpx; }
+.answer { font-size: 31rpx; line-height: 1.82; overflow-wrap: anywhere; word-break: break-word; }
+.heading { display: block; margin: 38rpx 0 12rpx; font-family: "Songti SC", STSong, serif; font-size: 36rpx; font-weight: 650; line-height: 1.45; }
+.answer .heading:first-child { margin-top: 0; }
+.paragraph { display: block; margin: 0 0 22rpx; white-space: pre-wrap; }
+.list-row { margin: 0 0 18rpx; display: grid; grid-template-columns: 42rpx 1fr; gap: 10rpx; }
+.marker { color: var(--color-brand); font-weight: 650; font-variant-numeric: tabular-nums; }

@@ -1,0 +1,17 @@
+<view class="feedback" aria-live="polite">
+  <view wx:if="{{state !== 'success'}}">
+    <text class="question">这次讲解难度合适吗？</text>
+    <text class="hint">反馈只校准当前能力，不改变知识事实。</text>
+    <view class="actions">
+      <button data-value="too_easy" bindtap="choose" disabled="{{state === 'submitting'}}">太简单</button>
+      <button class="recommended" data-value="right" bindtap="choose" disabled="{{state === 'submitting'}}">正合适</button>
+      <button data-value="too_hard" bindtap="choose" disabled="{{state === 'submitting'}}">太难</button>
+    </view>
+    <text wx:if="{{state === 'submitting'}}" class="notice">正在记录反馈…</text>
+    <view wx:if="{{state === 'error'}}" class="notice notice--error"><text>{{message}}</text><text> 点击任一选项即可重试。</text></view>
+  </view>
+  <view wx:else class="success">
+    <text class="check" aria-hidden="true">✓</text>
+    <text>{{message}}</text>
+  </view>
+</view>

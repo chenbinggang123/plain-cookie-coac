@@ -1,0 +1,19 @@
+<view class="message" aria-label="AI 教练回答">
+  <view class="meta">
+    <view class="coach-id"><view class="avatar" aria-hidden="true"><text></text><text></text><text></text></view><text>原味饼干</text></view>
+    <button class="copy" bindtap="copyAnswer" aria-label="复制这条教练回答">复制</button>
+  </view>
+  <view class="badge-row">
+    <text class="badge">{{message.dimensionLabel}} · {{message.levelLabel}}</text>
+    <text class="source">{{message.levelSource}}</text>
+  </view>
+  <view class="answer" user-select="true">
+    <block wx:for="{{message.blocks}}" wx:key="index">
+      <text wx:if="{{item.type === 'heading'}}" class="heading">{{item.text}}</text>
+      <view wx:elif="{{item.type === 'ordered' || item.type === 'bullet'}}" class="list-row"><text class="marker">{{item.marker}}</text><text>{{item.text}}</text></view>
+      <text wx:else class="paragraph">{{item.text}}</text>
+    </block>
+  </view>
+  <evidence-panel rationale="{{message.rationale}}" evidence="{{message.evidence}}" insufficient="{{message.evidenceInsufficient}}" />
+  <difficulty-feedback state="{{message.feedbackState}}" message="{{message.feedbackMessage}}" bindsubmit="submitFeedback" />
+</view>

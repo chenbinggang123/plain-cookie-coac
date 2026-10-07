@@ -1,0 +1,51 @@
+<view class="page">
+  <app-header top-inset="{{topInset}}" status-label="{{statusLabel}}" status-tone="{{statusTone}}" bindhistory="openHistory" bindprofile="openProfile" bindnewconversation="newConversation" />
+
+  <scroll-view
+    class="conversation"
+    style="top: {{headerHeight}}px; bottom: {{composerHeight}}px;"
+    scroll-y="true"
+    enhanced="true"
+    show-scrollbar="false"
+    scroll-with-animation="{{false}}"
+    scroll-into-view="{{scrollTarget}}"
+    enable-back-to-top="true"
+  >
+    <view id="chat-start"></view>
+    <service-status
+      visible="{{serviceBanner.visible}}"
+      tone="{{serviceBanner.tone}}"
+      title="{{serviceBanner.title}}"
+      detail="{{serviceBanner.detail}}"
+      action-label="{{serviceBanner.actionLabel}}"
+      bindaction="loadStatus"
+    />
+
+    <empty-conversation wx:if="{{!messages.length && !busy}}" suggestions="{{suggestions}}" bindchoose="chooseSuggestion" />
+
+    <block wx:for="{{messages}}" wx:key="id">
+      <view id="message-{{item.id}}">
+        <user-message wx:if="{{item.role === 'user'}}" message="{{item}}" />
+        <coach-message wx:else message="{{item}}" bindcopy="copyAnswer" bindfeedback="submitFeedback" />
+      </view>
+    </block>
+
+    <loading-message wx:if="{{busy}}" stage="{{generationStage}}" />
+    <error-state wx:if="{{requestError}}" title="{{requestError.title}}" detail="{{requestError.detail}}" bindretry="retryQuestion" />
+    <view id="chat-bottom" class="chat-bottom"></view>
+  </scroll-view>
+
+  <composer
+    value="{{draft}}"
+    busy="{{busy}}"
+    level-label="{{selectedLevelLabel}}"
+    bindchange="handleDraftChange"
+    bindlevel="openLevelSheet"
+    bindsend="sendQuestion"
+    bindkeyboard="handleKeyboard"
+  />
+
+  <level-selector-sheet open="{{levelSheetOpen}}" selected="{{selectedLevel}}" bindclose="closeLevelSheet" bindselect="selectLevel" />
+  <profile-sheet open="{{profileSheetOpen}}" profile="{{profile}}" current-hero="{{currentHero}}" dimensions="{{dimensions}}" loading="{{profileLoading}}" error="{{profileError}}" updating-dimension="{{updatingDimension}}" bindclose="closeProfile" bindretry="loadProfile" bindherochange="changeHero" bindlevelchange="changeProfileLevel" />
+  <conversation-drawer open="{{historyOpen}}" conversations="{{history}}" active-id="{{conversationId}}" top-inset="{{topInset}}" bindclose="closeHistory" bindnewconversation="newConversation" bindselect="selectConversation" binddelete="deleteConversation" />
+</view>

@@ -1,0 +1,31 @@
+<view class="composer" aria-label="发送问题">
+  <view class="level-row">
+    <button class="level" bindtap="openLevel" disabled="{{busy}}" aria-label="选择本次讲解难度，当前为{{levelLabel}}">
+      <text class="spark" aria-hidden="true">◇</text><text>{{levelLabel}}</text><text aria-hidden="true">⌄</text>
+    </button>
+    <text wx:if="{{nearLimit}}" class="counter {{length >= 1200 ? 'counter--error' : ''}}">{{length}} / 1200</text>
+  </view>
+  <view class="input-shell {{nearLimit ? 'input-shell--warning' : ''}}">
+    <textarea
+      class="input"
+      value="{{draft}}"
+      placeholder="描述这局发生了什么…"
+      placeholder-class="placeholder"
+      maxlength="1200"
+      auto-height="true"
+      adjust-position="true"
+      cursor-spacing="24"
+      hold-keyboard="true"
+      confirm-type="send"
+      disabled="{{busy}}"
+      bindinput="handleInput"
+      bindconfirm="send"
+      bindkeyboardheightchange="keyboardChange"
+      aria-label="描述这局发生了什么"
+    />
+    <button class="send {{canSend ? 'send--ready' : ''}}" bindtap="send" disabled="{{!canSend || busy}}" aria-label="{{busy ? '正在分析' : '发送问题'}}">
+      <text wx:if="{{!busy}}" aria-hidden="true">↑</text>
+      <view wx:else class="spinner" aria-hidden="true"></view>
+    </button>
+  </view>
+</view>

@@ -1,0 +1,12 @@
+.feedback { margin-top: 34rpx; padding-top: 28rpx; border-top: 1rpx solid var(--color-line); }
+.question { display: block; font-size: 28rpx; font-weight: 650; }
+.hint { display: block; margin-top: 6rpx; color: var(--color-muted); font-size: 23rpx; line-height: 1.5; }
+.actions { margin-top: 22rpx; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12rpx; }
+button { min-height: 44px; margin: 0; padding: 0 10rpx; color: var(--color-ink); background: var(--color-surface); border: 1rpx solid #b9c6c2; border-radius: 16rpx; font-size: 25rpx; font-weight: 550; }
+button:active { background: var(--color-subtle); }
+button[disabled] { opacity: .55; }
+.recommended { color: var(--color-brand-strong); border-color: rgba(20,125,120,.5); background: var(--color-brand-soft); }
+.notice { display: block; margin-top: 16rpx; color: var(--color-muted); font-size: 23rpx; }
+.notice--error { color: var(--color-error); }
+.success { display: flex; align-items: flex-start; gap: 14rpx; color: var(--color-brand-strong); font-size: 24rpx; line-height: 1.6; }
+.check { flex: 0 0 auto; width: 38rpx; height: 38rpx; display: flex; align-items: center; justify-content: center; color: #fff; background: var(--color-brand); border-radius: 50%; font-size: 23rpx; }

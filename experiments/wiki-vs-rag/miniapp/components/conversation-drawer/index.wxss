@@ -1,0 +1,16 @@
+.layer { position: fixed; z-index: 75; inset: 0; }
+.scrim { position: absolute; inset: 0; background: rgba(20,35,43,.42); }
+.drawer { position: absolute; inset: 0 90rpx 0 0; display: flex; flex-direction: column; background: var(--color-paper); box-shadow: 20rpx 0 50rpx rgba(20,35,43,.1); }
+.head { height: 96rpx; padding: 0 24rpx 0 30rpx; display: flex; align-items: center; justify-content: space-between; border-bottom: 1rpx solid var(--color-line); font-family: "Songti SC", STSong, serif; font-size: 34rpx; font-weight: 650; }
+.head button { width: 44px; height: 44px; margin: 0; padding: 0; color: var(--color-muted); background: transparent; font-size: 48rpx; font-weight: 300; }
+.new { min-height: 44px; margin: 22rpx 24rpx; display: flex; align-items: center; justify-content: center; gap: 10rpx; color: #fff; background: var(--color-brand); border-radius: 18rpx; font-size: 27rpx; font-weight: 600; }
+.history { flex: 1; min-height: 0; }
+.empty { padding: 100rpx 42rpx; display: flex; flex-direction: column; gap: 10rpx; color: var(--color-muted); font-size: 24rpx; line-height: 1.6; text-align: center; }
+.empty-title { color: var(--color-ink); font-size: 29rpx; font-weight: 600; }
+.item { margin: 0 14rpx; padding: 6rpx 10rpx 6rpx 16rpx; display: grid; grid-template-columns: 1fr 84rpx; align-items: center; border-bottom: 1rpx solid var(--color-line); border-radius: 14rpx; }
+.item--active { background: var(--color-brand-soft); }
+.select { min-width: 0; min-height: 48px; margin: 0; padding: 14rpx 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 5rpx; color: var(--color-ink); background: transparent; text-align: left; }
+.item-title { max-width: 100%; font-size: 26rpx; font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.time { color: var(--color-muted); font-size: 21rpx; }
+.delete { min-height: 44px; margin: 0; padding: 0; color: var(--color-error); background: transparent; font-size: 22rpx; }
+.privacy { padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom)); color: var(--color-muted); border-top: 1rpx solid var(--color-line); font-size: 21rpx; text-align: center; }
