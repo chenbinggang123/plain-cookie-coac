@@ -5,8 +5,9 @@ import tarfile
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import Mock, patch
 
-from bootstrap import extract_archive, is_allowed
+from bootstrap import extract_archive, is_allowed, main
 
 
 class KnowledgeBootstrapTests(unittest.TestCase):
@@ -42,6 +43,37 @@ class KnowledgeBootstrapTests(unittest.TestCase):
             )
             self.assertFalse((destination / "02-Areas/编程/private.md").exists())
             self.assertFalse((destination / "02-Areas/王者荣耀/image.png").exists())
+
+    def test_main_starts_server_before_syncing_knowledge(self) -> None:
+        events: list[str] = []
+        process = Mock()
+        process.wait.return_value = 0
+        process.poll.return_value = 0
+
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(
+            "os.environ", {"KNOWLEDGE_VAULT_DIR": temporary}
+        ), patch("bootstrap.subprocess.Popen", side_effect=lambda *args: events.append("server") or process), patch(
+            "bootstrap.sync_knowledge", side_effect=lambda *_args: events.append("sync")
+        ):
+            with self.assertRaisesRegex(SystemExit, "0"):
+                main()
+
+        self.assertEqual(events, ["server", "sync"])
+
+    def test_main_keeps_server_running_when_sync_fails(self) -> None:
+        process = Mock()
+        process.wait.return_value = 0
+        process.poll.return_value = 0
+
+        with tempfile.TemporaryDirectory() as temporary, patch.dict(
+            "os.environ", {"KNOWLEDGE_VAULT_DIR": temporary}
+        ), patch("bootstrap.subprocess.Popen", return_value=process), patch(
+            "bootstrap.sync_knowledge", side_effect=RuntimeError("network unavailable")
+        ):
+            with self.assertRaisesRegex(SystemExit, "0"):
+                main()
+
+        process.wait.assert_called_once_with()
 
 
 if __name__ == "__main__":

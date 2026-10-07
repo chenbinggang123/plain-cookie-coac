@@ -3,7 +3,7 @@
 这套项目分成两部分：
 
 - `experiments/wiki-vs-rag/miniapp` 是微信小程序前端，最终由微信开发者工具上传并发布。
-- `experiments/wiki-vs-rag` 是 Python API，使用仓库根目录的 `Dockerfile.cloudbase` 部署到 CloudBase 云托管。
+- `experiments/wiki-vs-rag` 是 Python API，使用部署仓库根目录的 `Dockerfile` 部署到 CloudBase 云托管。
 
 ## 1. 创建 CloudBase 环境
 
@@ -30,7 +30,7 @@ experiments/wiki-vs-rag/migrations/001_cloudbase_pg.sql
 | 仓库 | 当前 GitHub 仓库 |
 | 分支 | 上传代码所在分支 |
 | 构建目录 | `.` |
-| Dockerfile | `Dockerfile.cloudbase` |
+| Dockerfile | `Dockerfile` |
 | 容器端口 | `8080` |
 | 健康检查路径 | `/health` |
 

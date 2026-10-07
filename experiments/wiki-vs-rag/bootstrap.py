@@ -5,6 +5,7 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
 import tarfile
 import tempfile
@@ -115,11 +116,24 @@ def main() -> None:
     vault = Path(
         os.environ.get("KNOWLEDGE_VAULT_DIR", "/tmp/plain-cookie-vault")
     ).resolve()
-    sync_knowledge(vault)
-    os.execv(
-        sys.executable,
-        [sys.executable, str(APP_DIR / "server.py"), "--vault", str(vault)],
+    vault.mkdir(parents=True, exist_ok=True)
+    server = subprocess.Popen(
+        [sys.executable, str(APP_DIR / "server.py"), "--vault", str(vault)]
     )
+    print("HTTP 服务已启动，知识库将在引导阶段同步。", flush=True)
+    try:
+        try:
+            sync_knowledge(vault)
+        except Exception as exc:
+            print(
+                f"知识库同步失败，服务保持运行；修复配置后重新部署即可：{exc}",
+                file=sys.stderr,
+                flush=True,
+            )
+        raise SystemExit(server.wait())
+    finally:
+        if server.poll() is None:
+            server.terminate()
 
 
 if __name__ == "__main__":
